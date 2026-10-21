@@ -1,0 +1,13 @@
+{
+  "uuid": "screend@jksnetwork.github.io",
+  "name": "Screend helper",
+  "description": "Fast capture, window snapping and window placement for the Screend screenshot app.",
+  "shell-version": [
+    "45",
+    "46",
+    "47",
+    "48"
+  ],
+  "version": 1,
+  "url": "https://github.com/jksnetwork/screend"
+}

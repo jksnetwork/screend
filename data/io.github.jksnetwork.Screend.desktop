@@ -1,0 +1,45 @@
+[Desktop Entry]
+Type=Application
+Name=Screend
+GenericName=Screenshot Tool
+Comment=Capture, annotate and share screenshots
+Exec=screend region
+Icon=applets-screenshooter
+Terminal=false
+Categories=Utility;Graphics;GTK;
+Keywords=screenshot;capture;annotate;
+StartupNotify=false
+DBusActivatable=false
+Actions=region;screen;window;record;history;settings;quit;
+
+[Desktop Action region]
+Name=Capture Area
+Exec=screend region
+X-KDE-Shortcuts=Meta+Shift+S
+
+[Desktop Action screen]
+Name=Capture Current Screen
+Exec=screend screen
+X-KDE-Shortcuts=Meta+Shift+D
+
+[Desktop Action window]
+Name=Capture Focused Window
+Exec=screend window
+X-KDE-Shortcuts=Meta+Shift+W
+
+[Desktop Action record]
+Name=Start/Stop Recording
+Exec=screend record
+X-KDE-Shortcuts=Meta+Shift+V
+
+[Desktop Action history]
+Name=History
+Exec=screend history
+
+[Desktop Action settings]
+Name=Settings
+Exec=screend settings
+
+[Desktop Action quit]
+Name=Quit Screend
+Exec=screend quit
