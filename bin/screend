@@ -4,9 +4,11 @@
 
 here="$(dirname "$(readlink -f "$0")")"
 if [ -d "$here/../screend" ]; then
-    root="$here/.."                          # running from a checkout
+    root="$here/.."                                        # running from a checkout
+elif [ -d "${XDG_DATA_HOME:-$HOME/.local/share}/screend/screend" ]; then
+    root="${XDG_DATA_HOME:-$HOME/.local/share}/screend"   # per-user install (install.sh)
 else
-    root="${XDG_DATA_HOME:-$HOME/.local/share}/screend"   # installed copy
+    root=/usr/lib/screend                                  # system package (.deb)
 fi
 
 # Started from inside a snap (e.g. VS Code's terminal)? Shed its environment,
@@ -30,5 +32,7 @@ if [[ "${XDG_CURRENT_DESKTOP:-}" != *GNOME* ]]; then
     [ -n "$lib" ] && export LD_PRELOAD="$lib${LD_PRELOAD:+:$LD_PRELOAD}"
 fi
 
+# shortcuts registered with GNOME call this launcher by absolute path
+export SCREEND_LAUNCHER="$(readlink -f "$0")"
 export PYTHONPATH="$root${PYTHONPATH:+:$PYTHONPATH}"
 exec python3 -m screend "$@"

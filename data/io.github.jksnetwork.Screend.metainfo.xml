@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: CC0-1.0 -->
+<component type="desktop-application">
+  <id>io.github.jksnetwork.Screend</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+  <name>Screend</name>
+  <summary>Capture, annotate and record your screen</summary>
+  <developer id="io.github.jksnetwork">
+    <name>jksnetwork</name>
+  </developer>
+  <description>
+    <p>
+      Screend is a screenshot and screen-recording tool for Linux on Wayland. Press a
+      shortcut, drag over what you want, and a small card appears: copy it, drag it
+      into a chat, mark it up, pin it on top of your work, or pull the text out of it.
+    </p>
+    <ul>
+      <li>Area, window and screen capture with a frozen-screen selector and magnifier</li>
+      <li>Annotation editor: arrows, boxes, text, numbered steps, blur, highlighter, crop</li>
+      <li>Presentable backgrounds with padding, rounded corners and shadows</li>
+      <li>Scrolling capture that stitches long pages into one image</li>
+      <li>Copy text from any part of the screen (OCR)</li>
+      <li>Pin screenshots above your windows</li>
+      <li>Screen recording with GIF export</li>
+    </ul>
+    <p>
+      On GNOME a small Shell extension makes capture instant. KDE Plasma, Hyprland and
+      Sway are supported too.
+    </p>
+  </description>
+  <launchable type="desktop-id">io.github.jksnetwork.Screend.desktop</launchable>
+  <url type="homepage">https://github.com/jksnetwork/screend</url>
+  <url type="bugtracker">https://github.com/jksnetwork/screend/issues</url>
+  <url type="vcs-browser">https://github.com/jksnetwork/screend</url>
+  <provides>
+    <binary>screend</binary>
+  </provides>
+  <screenshots>
+    <screenshot type="default">
+      <caption>Select an area; everything else dims</caption>
+      <image>https://raw.githubusercontent.com/jksnetwork/screend/main/docs/images/selector.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Annotate with arrows, boxes, text, numbered steps and blur</caption>
+      <image>https://raw.githubusercontent.com/jksnetwork/screend/main/docs/images/editor.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Put screenshots on a background</caption>
+      <image>https://raw.githubusercontent.com/jksnetwork/screend/main/docs/images/beautified.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Recent captures</caption>
+      <image>https://raw.githubusercontent.com/jksnetwork/screend/main/docs/images/history.png</image>
+    </screenshot>
+  </screenshots>
+  <content_rating type="oars-1.1"/>
+  <supports>
+    <control>pointing</control>
+    <control>keyboard</control>
+  </supports>
+  <releases>
+    <release version="0.5.0" date="2026-10-22">
+      <description>
+        <p>First packaged release: a welcome screen that sets up shortcuts and the GNOME
+        extension, an in-app shortcut editor, Debian packages and a one-line installer.</p>
+      </description>
+    </release>
+  </releases>
+</component>

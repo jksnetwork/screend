@@ -5,7 +5,8 @@ import subprocess
 
 from gi.repository import Adw, Gio, GLib, Gtk
 
-from . import ocr
+from . import deps, ocr
+from .shortcuts_ui import ShortcutsGroup
 
 UNIT = "screend.service"
 
@@ -27,16 +28,17 @@ def _systemctl(*args):
         return out if out in ("enabled", "disabled") else None
     return out if result.returncode == 0 else None
 
-SHORTCUTS = [
-    ("Shift+Super+S", "Capture area (click a window or screen to capture it)"),
-    ("Shift+Super+W", "Capture focused window"),
-    ("Shift+Super+D", "Capture current screen"),
-    ("Shift+Super+A", "Capture all screens"),
-    ("Shift+Super+R", "Capture previous area"),
-    ("Shift+Super+T", "Copy text from an area (OCR)"),
-    ("Shift+Super+C", "Scrolling capture (again to finish)"),
-    ("Shift+Super+V", "Start / stop screen recording"),
-]
+
+# Start at login is the systemd user unit set up by install.sh or the package.
+# Toggling it never stops the running instance.
+
+def autostart_state():
+    """"enabled", "disabled", or None when the login service isn't installed."""
+    return _systemctl("is-enabled", UNIT)
+
+
+def set_autostart(on):
+    return _systemctl("enable" if on else "disable", UNIT) is not None
 
 
 class SettingsWindow(Adw.PreferencesWindow):
@@ -85,7 +87,9 @@ class SettingsWindow(Adw.PreferencesWindow):
         lang = self.entry("Languages", "ocr_language")
         text.add(lang)
         if not ocr.available():
-            text.set_description("Install Tesseract to enable: sudo apt install tesseract-ocr")
+            command = deps.install_command("tesseract")
+            text.set_description(f"Install Tesseract to enable: {command}" if command
+                                 else "Install Tesseract with your package manager to enable it")
         else:
             text.set_description("Tesseract language codes joined with +, e.g. eng+deu")
 
@@ -97,14 +101,8 @@ class SettingsWindow(Adw.PreferencesWindow):
 
         keys_page = Adw.PreferencesPage(title="Shortcuts", icon_name="preferences-desktop-keyboard-shortcuts-symbolic")
         self.add(keys_page)
-        keys = Adw.PreferencesGroup(title="Global shortcuts",
-                                    description="Installed by ./install.sh --keybindings; change them in "
-                                                "Settings → Keyboard → Custom Shortcuts.")
-        keys_page.add(keys)
-        for accel, what in SHORTCUTS:
-            row = Adw.ActionRow(title=what)
-            row.add_suffix(Gtk.Label(label=accel, css_classes=["dim-label"]))
-            keys.add(row)
+        self.keys_page = keys_page
+        keys_page.add(ShortcutsGroup(title="Global shortcuts"))
         status = Adw.PreferencesGroup(title="GNOME extension")
         keys_page.add(status)
         active = app.shell.available()
@@ -112,6 +110,12 @@ class SettingsWindow(Adw.PreferencesWindow):
             title="Active" if active else "Not running",
             subtitle="Fast capture, window snapping, recording and floating windows are available"
             if active else "Log out and back in after installing to enable fast capture and recording"))
+        welcome = Adw.ButtonRow(title="Show Welcome Screen") if hasattr(Adw, "ButtonRow") else None
+        if welcome is None:
+            welcome = Adw.ActionRow(title="Show welcome screen", activatable=True)
+            welcome.add_suffix(Gtk.Image(icon_name="go-next-symbolic"))
+        welcome.connect("activated", lambda *_: app.open_welcome())
+        status.add(welcome)
 
     # -- start at login -------------------------------------------------------
     #
@@ -122,19 +126,18 @@ class SettingsWindow(Adw.PreferencesWindow):
         row = Adw.SwitchRow(title="Start at login",
                             subtitle="Keeps the tray icon and instant hotkeys ready. "
                                      "When off, the first hotkey starts Screend.")
-        state = _systemctl("is-enabled", UNIT)
+        state = autostart_state()
         if state is None:
             row.set_sensitive(False)
-            row.set_subtitle("Unavailable: run ./install.sh to set up the login service")
+            row.set_subtitle("Unavailable: Screend's login service isn't installed")
             return row
         row.set_active(state == "enabled")
         row.connect("notify::active", self.on_autostart_toggled)
         return row
 
     def on_autostart_toggled(self, row, _pspec):
-        verb = "enable" if row.get_active() else "disable"
-        if _systemctl(verb, UNIT) is None:
-            self.app.notify_error(f"Could not {verb} start at login")
+        if not set_autostart(row.get_active()):
+            self.app.notify_error("Could not change start at login")
 
     # -- row builders -------------------------------------------------------
 

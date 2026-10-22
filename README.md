@@ -46,26 +46,45 @@ Need the whole page, chat or document? Select the area and scroll. Screend stitc
 
 ## Install
 
-Screend needs Python 3, GTK 4 and libadwaita (preinstalled on Ubuntu 24.04 and most GNOME desktops).
+### Ubuntu and Debian
+Download `screend_<version>_all.deb` from the [latest release](https://github.com/jksnetwork/screend/releases/latest) and open it, or:
+
+```bash
+sudo apt install ./screend_*_all.deb
+```
+
+apt installs everything Screend needs, including text recognition. Needs Ubuntu 24.04 / Debian 13 or newer.
+
+### Any other distro (one line, no root)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/jksnetwork/screend/main/install.sh | bash
+```
+
+This installs the latest release for your user. If something is missing (Python GTK bindings, libadwaita), it tells you the exact command for your distro. Run the same line again to update.
+
+### From source
 
 ```bash
 git clone https://github.com/jksnetwork/screend.git
 cd screend
-./install.sh --keybindings
+./install.sh
 ```
 
-On GNOME, **log out and back in once** so the Shell extension loads. Until then everything still works, just more slowly.
+### First run
 
-Optional extras:
+Open **Screend** from your app menu (the one-line installer opens it for you). A **welcome screen** sets up your keyboard shortcuts (and lets you change them), starts Screend at login, and shows which optional extras are installed. On GNOME, **log out and back in once** afterwards so the Shell extension loads. Until then everything works, just more slowly.
 
-| For | Install |
+Optional extras, each unlocking a feature (the welcome screen shows the exact install command):
+
+| For | Package |
 |---|---|
-| Copying text (OCR) | `sudo apt install tesseract-ocr` (or your distro's `tesseract` package) |
+| Copying text (OCR) | `tesseract-ocr` / `tesseract` |
 | GIF export | `ffmpeg` |
-| Corner card and pins on KDE / Hyprland / Sway | `gtk4-layer-shell` |
 | Fast capture on Sway / Hyprland | `grim` |
+| Corner card and pins on KDE / Hyprland / Sway | `gtk4-layer-shell` |
 
-To remove everything: `./install.sh --uninstall`. Your screenshots are left alone.
+To uninstall: `sudo apt remove screend`, or `~/.local/share/screend/install.sh --uninstall` for the per-user install. Your screenshots are left alone.
 
 ## Using it
 

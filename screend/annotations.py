@@ -4,7 +4,11 @@
 import math
 
 import cairo
-from gi.repository import Pango, PangoCairo
+import gi
+
+gi.require_version("Pango", "1.0")
+gi.require_version("PangoCairo", "1.0")
+from gi.repository import Pango, PangoCairo  # noqa: E402
 
 SHADOW = (0, 0, 0, 0.35)
 SHADOW_OFFSET = 1.5

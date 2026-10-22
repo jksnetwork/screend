@@ -114,6 +114,13 @@ tools/nested-shell.sh python3 tools/docs_screenshots.py
 
 It drives Screend through each feature in a nested session, with its own temporary config, history and demo content. It needs `ffmpeg` for the GIF. Update the script when the UI changes, rather than adding hand-made screenshots.
 
+## Packaging and releases
+
+- `packaging/build-deb.sh` builds `dist/screend_<version>_all.deb`. It installs to `/usr/lib/screend`, `/usr/bin/screend`, the system extension and systemd user unit directories, and AppStream metadata. Dependencies are declared in the script.
+- `install.sh` is the per-user installer. Piped from curl it downloads the latest release tarball first, then checks dependencies and installs into `~/.local`.
+- **Releasing:** bump `__version__` in `screend/__init__.py` and add a `<release>` to `data/io.github.jksnetwork.Screend.metainfo.xml`, then push a tag `v<version>`. The *Release* workflow checks the tag matches the version, builds the `.deb` and publishes a GitHub release with it attached.
+- The *CI* workflow runs the tests, validates the desktop entry and AppStream data, and builds the package on every push and pull request.
+
 ## Code style
 
 - Match the surrounding code: small modules, docstrings that explain *why*, comments only where something isn't obvious.

@@ -33,6 +33,7 @@ from .quickaccess import QuickAccess  # noqa: E402
 from .selector import RegionSelector  # noqa: E402
 from .settings import SettingsWindow  # noqa: E402
 from .tray import Tray  # noqa: E402
+from .welcome import WelcomeWindow  # noqa: E402
 from .shot import HISTORY_DIR, Recording, Shot, prune_history, unique_path  # noqa: E402
 
 APP_ID = "io.github.jksnetwork.Screend"
@@ -68,7 +69,7 @@ window.screend-scroll-panel > box {
 """
 
 ACTIONS = ["region", "screen", "fullscreen", "last", "window", "text", "scroll", "record", "open",
-           "history", "folder", "settings", "daemon", "quit"]
+           "history", "folder", "settings", "welcome", "launch", "daemon", "quit"]
 CAPTURE_ACTIONS = ("region", "screen", "fullscreen", "last", "window", "text", "scroll", "record")
 
 
@@ -81,6 +82,7 @@ def build_parser():
                         "text: copy the text in an area (OCR) | scroll: scrolling capture | "
                         "record: start/stop screen recording | open FILE: annotate an image | "
                         "history: browse captures | folder: open save folder | settings | "
+                        "welcome: setup screen | launch: welcome on first run, else capture | "
                         "daemon: start in background | quit")
     p.add_argument("file", nargs="?", help="image to open with the 'open' action")
     p.add_argument("-d", "--delay", type=float, default=0, help="seconds to wait before capturing")
@@ -103,6 +105,7 @@ class ScreendApp(Adw.Application):
         self.portal_recorder = None
         self.history = None
         self.settings = None
+        self.welcome = None
         self.pins = []
 
     def do_startup(self):
@@ -139,7 +142,16 @@ class ScreendApp(Adw.Application):
         if action == "quit":
             self.quit()
         elif action == "daemon":
-            pass
+            if not self.config.welcomed:
+                # first login after installing: give the session a moment to settle
+                GLib.timeout_add_seconds(3, lambda: self.open_welcome() and False)
+        elif action == "welcome":
+            self.open_welcome()
+        elif action == "launch":
+            if self.config.welcomed:
+                self.capture("region")
+            else:
+                self.open_welcome()
         elif action == "folder":
             self.open_folder()
         elif action == "history":
@@ -543,6 +555,11 @@ class ScreendApp(Adw.Application):
         else:
             self.history = HistoryWindow(self)
         self.present(self.history)
+
+    def open_welcome(self):
+        if not self._live(self.welcome):
+            self.welcome = WelcomeWindow(self)
+        self.present(self.welcome)
 
     def open_settings(self):
         if not self._live(self.settings):

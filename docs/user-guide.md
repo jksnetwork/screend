@@ -15,11 +15,17 @@
 
 ## Getting started
 
-1. Run `./install.sh --keybindings` from the source folder. This installs Screend for your user, starts it at login, adds a tray icon and (on GNOME) installs the Shell extension and global shortcuts.
-2. **On GNOME, log out and back in once.** GNOME only loads new extensions at login. Until you do, Screend works through the standard screenshot portal, which is slower (about a second per capture) and can't snap to windows.
-3. Press <kbd>Shift</kbd>+<kbd>Super</kbd>+<kbd>S</kbd> and drag over something.
+1. Install Screend (see the [README](../README.md#install)): the `.deb` on Ubuntu/Debian, or the one-line installer anywhere else.
+2. The **welcome screen** opens on first run. It:
+   - adds the keyboard shortcuts (any key that's already taken is skipped, and you can change each one)
+   - turns on *Start at login*
+   - lists optional extras with the exact command to install each one
+3. **On GNOME, log out and back in once.** GNOME only loads new extensions at login. Until you do, Screend works through the standard screenshot portal, which is slower (about a second per capture) and can't snap to windows.
+4. Press <kbd>Shift</kbd>+<kbd>Super</kbd>+<kbd>S</kbd> and drag over something.
 
 The first capture without the extension may ask whether Screend may take screenshots. Allow it once.
+
+Reopen the welcome screen at any time from **Settings → Shortcuts → Show welcome screen**, or with `screend welcome`. Shortcuts can also be changed in **Settings → Shortcuts**: click one, then press the new keys (<kbd>Backspace</kbd> disables it).
 
 To check the extension is running, open **About Screend** from the tray menu and look under **Troubleshooting**.
 
@@ -247,6 +253,8 @@ screend [ACTION] [FILE] [-d SECONDS] [--screen]
   open FILE    annotate an image
   history      recent captures
   settings     preferences
+  welcome      the first-run setup screen
+  launch       what the app menu entry runs: welcome on first run, then capture
   folder       open the screenshots folder
   quit         stop Screend
 ```
@@ -260,9 +268,10 @@ Screend runs as a single background instance. Each command is handed to it, so c
 | Settings | `~/.config/screend/config.json` |
 | Recent captures (history) | `~/.cache/screend/history/` |
 | Saved screenshots | `~/Pictures/Screend/` (configurable) |
-| The app | `~/.local/share/screend/`, launcher `~/.local/bin/screend` |
-| GNOME extension | `~/.local/share/gnome-shell/extensions/screend@jksnetwork.github.io/` |
-| Login service | `~/.config/systemd/user/screend.service` |
+| The app | `.deb`: `/usr/lib/screend/`, launcher `/usr/bin/screend`. Per-user install: `~/.local/share/screend/`, `~/.local/bin/screend` |
+| GNOME extension | `/usr/share/gnome-shell/extensions/screend@jksnetwork.github.io/` or `~/.local/share/gnome-shell/extensions/…` |
+| Login service | `screend.service` (systemd user unit) |
+| Shortcuts | GNOME *Settings → Keyboard → Custom Shortcuts*, entries named "Screend: …" |
 
 ## Troubleshooting
 
@@ -287,5 +296,8 @@ KWin's fast screenshot interface is only available to apps that request it. `./i
 **Reporting a bug.**
 Open **About Screend → Troubleshooting**, use *Save debug info*, and attach the file to your report.
 
+**The installer says something is missing.**
+It prints the exact command for your distro. Run it, then run the installer again. Screend needs libadwaita 1.5 or newer (Ubuntu 24.04, Fedora 40, or newer).
+
 **Uninstalling.**
-`./install.sh --uninstall` removes the app, extension, service and shortcuts. Your saved screenshots stay where they are.
+`sudo apt remove screend`, or `~/.local/share/screend/install.sh --uninstall` for the per-user install. That removes the app, extension, service and shortcuts. Your saved screenshots and settings stay where they are.

@@ -1,0 +1,32 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends python3-gi python3-gi-cairo python3-cairo \
+            python3-pil gir1.2-gtk-4.0 gir1.2-adw-1 desktop-file-utils appstream
+      - name: Unit tests
+        run: python3 -m unittest discover -v tests
+      - name: Validate desktop entry and AppStream metadata
+        run: |
+          desktop-file-validate data/*.desktop
+          appstreamcli validate --no-net data/*.metainfo.xml
+      - name: Shell scripts parse
+        run: for f in install.sh bin/screend tools/nested-shell.sh packaging/build-deb.sh; do bash -n "$f"; done
+      - name: Build the Debian package
+        run: packaging/build-deb.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deb
+          path: dist/*.deb

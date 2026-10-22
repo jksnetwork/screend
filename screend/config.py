@@ -31,6 +31,8 @@ class Config:
     auto_copy: bool = False
     show_quick_access: bool = True
     show_tray: bool = True
+    # the welcome window has been seen (it sets up shortcuts, login start, extension)
+    welcomed: bool = False
     # keep the area selection editable after the drag; Enter captures (GNOME extension only)
     adjust_selection: bool = False
     # seconds before the quick access card hides itself; 0 keeps it until dismissed
