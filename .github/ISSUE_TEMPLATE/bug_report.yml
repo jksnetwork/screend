@@ -1,0 +1,73 @@
+name: Bug report
+description: Something doesn't work the way it should
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. The details below make it much quicker to fix.
+        Security problem? Please [report it privately](https://github.com/jksnetwork/screend/security/advisories/new) instead.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+      placeholder: |
+        1. Pressed Shift+Super+S and dragged over a browser window
+        2. Expected the card to appear
+        3. Nothing happened
+    validations:
+      required: true
+  - type: dropdown
+    id: desktop
+    attributes:
+      label: Desktop
+      options:
+        - GNOME
+        - KDE Plasma
+        - Hyprland
+        - Sway
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: distro
+    attributes:
+      label: Distribution and version
+      placeholder: Ubuntu 24.04
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How did you install Screend?
+      options:
+        - .deb package
+        - One-line installer
+        - From source (./install.sh)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: debug
+    attributes:
+      label: Debug info
+      description: >
+        In Screend, open **About Screend → Troubleshooting** and click *Save debug info* (or copy it),
+        then paste it here. It shows your Screend version, desktop and whether the GNOME extension is running.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: |
+        If you can, run `journalctl --user -b | grep -i screend | tail -50` and paste the output.
+        (If Screend crashed, run `screend quit; screend daemon` in a terminal and reproduce the problem.)
+      render: text
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Screenshots or recordings of the problem are very welcome.

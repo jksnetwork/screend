@@ -1,0 +1,27 @@
+name: Feature request
+description: Suggest an idea or improvement
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would you like to do?
+      description: Describe what you're trying to achieve. The goal matters more than a specific solution.
+      placeholder: When I capture a long chat, I'd like to…
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: How could Screend help?
+      description: Your idea for how it might work, if you have one.
+  - type: dropdown
+    id: desktop
+    attributes:
+      label: Desktop you use
+      options:
+        - GNOME
+        - KDE Plasma
+        - Hyprland
+        - Sway
+        - Other

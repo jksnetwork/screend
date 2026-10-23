@@ -1,5 +1,9 @@
 # Screend
 
+[![CI](https://github.com/jksnetwork/screend/actions/workflows/ci.yml/badge.svg)](https://github.com/jksnetwork/screend/actions/workflows/ci.yml)
+[![Latest release](https://img.shields.io/github/v/release/jksnetwork/screend)](https://github.com/jksnetwork/screend/releases/latest)
+[![License: GPL-3.0-or-later](https://img.shields.io/badge/license-GPL--3.0--or--later-blue)](LICENSE)
+
 **Fast screenshots, annotation and screen recording for Linux on Wayland.**
 
 Press a key, drag over what you want, and a small card appears. Copy it, drag it into a chat, mark it up, pin it on top of your work, or pull the text out of it. Screend runs natively on GNOME through a small Shell extension, and also works on KDE Plasma, Hyprland and Sway.
@@ -118,7 +122,7 @@ GNOME 46 on Ubuntu 24.04 is where Screend is developed and tested. The KDE, Hypr
 
 ## Contributing
 
-Bug reports, testing on other desktops, and pull requests are all appreciated. [CONTRIBUTING.md](CONTRIBUTING.md) explains how the pieces fit together, how to run the tests, and how to work on the GNOME extension without logging out.
+Bug reports, testing on other desktops, and pull requests are all appreciated. Please follow the [code of conduct](CODE_OF_CONDUCT.md), and report security problems privately as described in [SECURITY.md](SECURITY.md). [CONTRIBUTING.md](CONTRIBUTING.md) explains how the pieces fit together, how to run the tests, and how to work on the GNOME extension without logging out.
 
 ## License
 
